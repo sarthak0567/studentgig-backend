@@ -2,16 +2,16 @@ const Database = require("better-sqlite3");
 const path = require("path");
 const fs = require("fs");
 
-// ✅ Use Render’s persistent directory (/data), fallback to current dir
-const dataDir = process.env.RENDER ? "/data" : process.cwd();
-const dbPath = path.join(dataDir, "studentgig.db");
+// ✅ Use project directory (works safely on Render)
+const dataDir = path.join(process.cwd(), "data");
 
-// Ensure directory exists
+// Make sure folder exists
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-console.log("✅ Database Path:", dbPath);
+const dbPath = path.join(dataDir, "studentgig.db");
+console.log("✅ Database path:", dbPath);
 
 const db = new Database(dbPath);
 
