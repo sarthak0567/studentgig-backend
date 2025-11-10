@@ -7,25 +7,22 @@ const gigRoutes = require("./routes/gigs");
 
 const app = express();
 
-// ✅ Enable CORS for Netlify frontend
-app.use(
-  cors({
-    origin: ["https://wonderful-sunburst-baabf1.netlify.app"], // your live frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+// ✅ CORS setup — allow Netlify frontend to access Render backend
+app.use(cors({
+  origin: "https://wonderful-sunburst-baabf1.netlify.app", // your Netlify domain
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
-// ✅ Parse JSON bodies
 app.use(express.json());
 
-// ✅ Optional logging for debug
+// ✅ Simple logger for debugging
 app.use((req, res, next) => {
   console.log(`[${req.method}] ${req.url}`);
   next();
 });
 
-// ✅ Routes
+// ✅ API routes
 app.use("/api", authRoutes);
 app.use("/api", gigRoutes);
 
@@ -34,8 +31,8 @@ app.get("/", (req, res) => {
   res.send("🚀 StudentGig backend is running successfully!");
 });
 
-// ✅ Start server
-const PORT = process.env.PORT || 4000;
+// ✅ Start server (only once)
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
